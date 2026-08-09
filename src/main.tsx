@@ -13,15 +13,16 @@ import './styles.css';
 
 const viewerPath = '/docs/vitejs/vite/docs/guide?scope=docs%2Fguide';
 const DocsViewer = lazy(() => import('@md-with-git/viewer').then(({ DocsViewer: Viewer }) => ({ default: Viewer })));
+const brandAsset = (fileName: string) => `${import.meta.env.BASE_URL}brand/${fileName}`;
 
 const brand = {
   appName: 'Northstar Docs',
   mark: 'NS',
   document: {
-    icon: { src: '/brand/northstar-mark.svg', alt: 'Northstar 星形标志' },
+    icon: { src: brandAsset('northstar-mark.svg'), alt: 'Northstar 星形标志' },
   },
   settings: {
-    image: { src: '/brand/settings-banner.svg', alt: 'Northstar Knowledge base' },
+    image: { src: brandAsset('settings-banner.svg'), alt: 'Northstar Knowledge base' },
   },
 };
 
@@ -89,7 +90,7 @@ function Home() {
       <div className="northstar-proof"><div><strong>Git-native</strong><span>文档内容与版本保持同源</span></div><div><strong>Host-owned</strong><span>主题与扩展由 React 宿主掌控</span></div><div><strong>Read-only</strong><span>阅读器不修改你的仓库</span></div></div>
     </section>
     <aside className="northstar-panel" aria-label="branding integration overview">
-      <img src="/brand/northstar-mark.svg" alt="" />
+      <img src={brandAsset('northstar-mark.svg')} alt="" />
       <span className="northstar-panel-kicker">BRANDING CONTRACT</span>
       <h2>一个受控的文档表面。</h2>
       <ul><li><span>01</span>DocsRendererProvider 提供品牌与主题</li><li><span>02</span>Renderer registry 白名单渲染扩展</li><li><span>03</span>Viewer 只读取 Git 文档空间</li></ul>
@@ -101,7 +102,7 @@ function Home() {
 function Shell() {
   return <div className="northstar-shell">
     <header className="northstar-header">
-      <Link className="northstar-wordmark" to="/"><img src="/brand/northstar-mark.svg" alt="" /><span>northstar</span><small>docs</small></Link>
+      <Link className="northstar-wordmark" to="/"><img src={brandAsset('northstar-mark.svg')} alt="" /><span>northstar</span><small>docs</small></Link>
       <nav aria-label="主导航"><Link to="/">概览</Link><Link to={viewerPath}>文档中心</Link><a href="https://www.npmjs.com/package/@md-with-git/viewer" target="_blank" rel="noreferrer">npm 包</a></nav>
       <ThemeControl />
     </header>
@@ -110,7 +111,7 @@ function Shell() {
 }
 
 function App() {
-  return <DocsRendererProvider registry={registry} theme="light" themeColors={themeColors} branding={brand}><BrowserRouter><Shell /></BrowserRouter></DocsRendererProvider>;
+  return <DocsRendererProvider registry={registry} theme="light" themeColors={themeColors} branding={brand}><BrowserRouter basename={import.meta.env.BASE_URL}><Shell /></BrowserRouter></DocsRendererProvider>;
 }
 
 createRoot(document.getElementById('root')!).render(<StrictMode><App /></StrictMode>);
