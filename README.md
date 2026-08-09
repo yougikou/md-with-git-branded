@@ -12,7 +12,7 @@
 
 ## 本地运行
 
-需要 Node.js 20+，并启用 Corepack：
+需要 Node.js 22.13+，并启用 Corepack：
 
 ```bash
 corepack enable
