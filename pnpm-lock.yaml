@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@md-with-git/viewer':
-        specifier: 0.1.5
-        version: 0.1.5(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react-router-dom@6.28.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
+        specifier: 0.1.7
+        version: 0.1.7(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react-router-dom@6.28.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)
       '@vitejs/plugin-react':
         specifier: 4.3.4
         version: 4.3.4(vite@6.0.5(@types/node@22.10.5)(yaml@2.9.0))
@@ -300,8 +300,8 @@ packages:
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
 
-  '@md-with-git/viewer@0.1.5':
-    resolution: {integrity: sha512-PbhhVk9NciQdlYs9zbGfO6E95yGMZRRHfPorDVreul1n8m8uQ1Vv74jTjmdZyJsk3SnRzL4HsUqJOUHu0yJq9Q==}
+  '@md-with-git/viewer@0.1.7':
+    resolution: {integrity: sha512-bijPekjHNq2LGDYoW4ptQCf4sA9OCfYRTu/KR6WeOFnaQfaqVm052/3zdS5SaqOKI4wyKyYTIPimOKHNg05AFw==}
     peerDependencies:
       react: ^18.3.1
       react-dom: ^18.3.1
@@ -1833,7 +1833,7 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
 
-  '@md-with-git/viewer@0.1.5(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react-router-dom@6.28.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)':
+  '@md-with-git/viewer@0.1.7(@types/react@18.3.12)(react-dom@18.3.1(react@18.3.1))(react-router-dom@6.28.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1))(react@18.3.1)':
     dependencies:
       buffer: 6.0.3
       isomorphic-git: 1.41.4
