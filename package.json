@@ -10,7 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@md-with-git/viewer": "0.1.7",
+    "@md-with-git/viewer": "0.1.8",
     "@vitejs/plugin-react": "4.3.4",
     "typescript": "5.7.2",
     "vite": "6.0.5",
