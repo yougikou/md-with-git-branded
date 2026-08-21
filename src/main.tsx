@@ -1,4 +1,4 @@
-import { lazy, StrictMode, Suspense, type ReactNode } from 'react';
+import { Component, lazy, StrictMode, Suspense, useState, type ErrorInfo, type ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Link, Route, Routes } from 'react-router-dom';
 import {
@@ -73,7 +73,17 @@ registry.registerYamlRenderer('northstar-release', ReleaseNoteRenderer);
 function ThemeControl() {
   const { theme, setTheme } = useDocsHostConfiguration();
   const nextTheme: DocsTheme = theme === 'light' ? 'dark' : 'light';
-  return <button className="theme-control" type="button" onClick={() => setTheme(nextTheme)}>{theme === 'light' ? '切换夜间模式' : '切换日间模式'}</button>;
+  return <button className="theme-control" type="button" aria-pressed={theme === 'dark'} aria-label={theme === 'light' ? '切换至夜间模式' : '切换至日间模式'} onClick={() => setTheme(nextTheme)}>{theme === 'light' ? '切换夜间模式' : '切换日间模式'}</button>;
+}
+
+class ViewerErrorBoundary extends Component<{ children: ReactNode }, { hasError: boolean }> {
+  state = { hasError: false };
+  static getDerivedStateFromError() { return { hasError: true }; }
+  componentDidCatch(error: Error, errorInfo: ErrorInfo) { console.error('Northstar Docs viewer failed to load.', error, errorInfo); }
+  render() {
+    if (this.state.hasError) return <main className="northstar-viewer-error" role="alert"><p className="northstar-eyebrow">DOCUMENT CENTER</p><h1>文档中心暂时无法打开。</h1><p>请检查网络或文档来源后重试；你的仓库不会被修改。</p><div className="northstar-actions"><button className="northstar-primary" type="button" onClick={() => window.location.reload()}>重新加载</button><a className="northstar-secondary" href={import.meta.env.BASE_URL}>返回概览</a></div></main>;
+    return this.props.children;
+  }
 }
 
 function Home() {
@@ -99,14 +109,19 @@ function Home() {
   </main>;
 }
 
+function NotFound() {
+  return <main className="northstar-not-found"><p className="northstar-eyebrow">404 / PAGE NOT FOUND</p><h1>这个页面不存在。</h1><p>你可以返回概览，或直接进入文档中心。</p><div className="northstar-actions"><Link className="northstar-primary" to="/">返回概览 <span>→</span></Link><Link className="northstar-secondary" to={viewerPath}>打开文档中心</Link></div></main>;
+}
+
 function Shell() {
+  const [menuOpen, setMenuOpen] = useState(false);
   return <div className="northstar-shell">
     <header className="northstar-header">
       <Link className="northstar-wordmark" to="/"><img src={brandAsset('northstar-mark.svg')} alt="" /><span>northstar</span><small>docs</small></Link>
-      <nav aria-label="主导航"><Link to="/">概览</Link><Link to={viewerPath}>文档中心</Link><a href="https://www.npmjs.com/package/@md-with-git/viewer" target="_blank" rel="noreferrer">npm 包</a></nav>
-      <ThemeControl />
+      <nav id="northstar-primary-navigation" className={menuOpen ? 'is-open' : undefined} aria-label="主导航"><Link to="/" onClick={() => setMenuOpen(false)}>概览</Link><Link to={viewerPath} onClick={() => setMenuOpen(false)}>文档中心</Link><a href="https://www.npmjs.com/package/@md-with-git/viewer" target="_blank" rel="noreferrer" onClick={() => setMenuOpen(false)}>npm 包</a></nav>
+      <div className="northstar-header-controls"><button className="menu-control" type="button" aria-expanded={menuOpen} aria-controls="northstar-primary-navigation" onClick={() => setMenuOpen((open) => !open)}><span aria-hidden="true">☰</span><span className="sr-only">{menuOpen ? '关闭导航菜单' : '打开导航菜单'}</span></button><ThemeControl /></div>
     </header>
-    <Routes><Route path="/" element={<Home />} /><Route path="/docs/*" element={<Suspense fallback={<div className="northstar-viewer-loading">正在加载文档中心…</div>}><DocsViewer /></Suspense>} /><Route path="*" element={<Home />} /></Routes>
+    <Routes><Route path="/" element={<Home />} /><Route path="/docs/*" element={<ViewerErrorBoundary><Suspense fallback={<div className="northstar-viewer-loading" role="status" aria-live="polite">正在加载文档中心…</div>}><DocsViewer /></Suspense></ViewerErrorBoundary>} /><Route path="*" element={<NotFound />} /></Routes>
   </div>;
 }
 
